@@ -50,6 +50,7 @@ updateStateImpl name tfstate = do
 purgeStateImpl :: (MonadGit m, MonadPass m, Monad m) => Text -> m Text
 purgeStateImpl name = do
   tfstate <- getStateImpl name
+  purge $ stateFilePath name
   gitPush
   pure tfstate
 
