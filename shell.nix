@@ -4,17 +4,19 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, servant, servant-server, shelly, stdenv
-      , text, zlib
+  f = { mkDerivation, aeson, base, bytestring, directory, mtl
+      , optparse-applicative, optparse-generic, servant, servant-server
+      , shelly, stdenv, text, warp, zlib
       }:
       mkDerivation {
-        pname = "terraform-http-pass-backend";
+        pname = "terraform-http-backend-pass";
         version = "0.1.0.0";
         src = ./.;
         isLibrary = true;
         isExecutable = true;
         libraryHaskellDepends = [
-          base servant servant-server shelly text
+          aeson base bytestring directory mtl optparse-applicative
+          optparse-generic servant servant-server shelly text warp
         ];
         librarySystemDepends = [ zlib ];
         executableHaskellDepends = [ base ];

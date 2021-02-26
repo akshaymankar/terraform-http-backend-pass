@@ -2,6 +2,7 @@
 
 module Terraform.HttpBackend.Pass.Run where
 
+import Data.Function ((&))
 import qualified Network.Wai.Handler.Warp as Warp
 import Options.Generic
 import qualified Servant.Server as Servant

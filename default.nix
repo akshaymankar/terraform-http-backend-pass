@@ -1,6 +1,6 @@
-{ mkDerivation, base, bytestring, mtl, optparse-applicative
-, optparse-generic, servant, servant-server, shelly, stdenv, text
-, warp, zlib
+{ mkDerivation, aeson, base, bytestring, directory, mtl
+, optparse-applicative, optparse-generic, servant, servant-server
+, shelly, stdenv, text, warp, zlib
 }:
 mkDerivation {
   pname = "terraform-http-backend-pass";
@@ -9,8 +9,8 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
-    base bytestring mtl optparse-applicative optparse-generic servant
-    servant-server shelly text warp
+    aeson base bytestring directory mtl optparse-applicative
+    optparse-generic servant servant-server shelly text warp
   ];
   librarySystemDepends = [ zlib ];
   executableHaskellDepends = [ base ];
