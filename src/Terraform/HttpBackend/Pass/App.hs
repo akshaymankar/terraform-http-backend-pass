@@ -6,12 +6,13 @@
 
 module Terraform.HttpBackend.Pass.App where
 
-import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Reader (MonadReader (ask), ReaderT (runReaderT))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Shelly (shelly)
 import qualified Shelly
+import System.Directory (doesFileExist)
 import Terraform.HttpBackend.Pass.Crypt (MonadPass (..))
 import Terraform.HttpBackend.Pass.Env (Env (..))
 import Terraform.HttpBackend.Pass.Git (MonadGit (..))
@@ -48,6 +49,9 @@ instance (Monad m, MonadIO m) => MonadPass (AppT m) where
     shelly $ do
       Shelly.setenv "PASSWORD_STORE_DIR" (Text.pack directory)
       Shelly.run_ "pass" ["rm", name]
+  exists name = do
+    Env {..} <- ask
+    liftIO $ doesFileExist (directory <> "/" <> Text.unpack name)
 
 runAppT :: Env -> AppT m a -> m a
 runAppT env (AppT r) = runReaderT r env

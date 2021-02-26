@@ -1,9 +1,11 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Terraform.HttpBackend.Pass.Api where
 
+import Control.Monad (unless)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -14,11 +16,11 @@ import Terraform.HttpBackend.Pass.App (AppT)
 import Terraform.HttpBackend.Pass.Crypt (MonadPass (..))
 import Terraform.HttpBackend.Pass.Git (MonadGit (..))
 
-type GetState = "state" :> Capture "name" Text :> Get '[PlainText] Text
+type GetState = "state" :> Capture "name" Text :> UVerb 'GET '[PlainText] [WithStatus 200 Text, WithStatus 404 Text]
 
 type UpdateState = "state" :> Capture "name" Text :> ReqBody '[PlainText] Text :> PostNoContent
 
-type DeleteState = "state" :> Capture "name" Text :> Delete '[PlainText] Text
+type DeleteState = "state" :> Capture "name" Text :> DeleteNoContent
 
 type Api = GetState :<|> UpdateState :<|> DeleteState
 
@@ -31,11 +33,14 @@ server =
     :<|> updateStateImpl
     :<|> purgeStateImpl
 
--- TODO: Gracefully return 404 when the file doesn't exist
-getStateImpl :: (Monad m, MonadGit m, MonadPass m) => Text -> m Text
+getStateImpl :: (Monad m, MonadGit m, MonadPass m) => Text -> m (Union '[WithStatus 200 Text, WithStatus 404 Text])
 getStateImpl name = do
   gitPull
-  decrypt (name <> "/terraform.tfstate")
+  let path = stateFilePath name
+  stateExists <- exists path
+  if stateExists
+    then respond =<< (WithStatus @200 <$> decrypt path)
+    else respond (WithStatus @404 ("Not found!" :: Text))
 
 updateStateImpl :: (Monad m, MonadPass m, MonadGit m) => Text -> Text -> m NoContent
 updateStateImpl name tfstate = do
@@ -47,12 +52,15 @@ updateStateImpl name tfstate = do
   gitPush
   pure NoContent
 
-purgeStateImpl :: (MonadGit m, MonadPass m, Monad m) => Text -> m Text
+purgeStateImpl :: (MonadGit m, MonadPass m, Monad m) => Text -> m NoContent
 purgeStateImpl name = do
-  tfstate <- getStateImpl name
-  purge $ stateFilePath name
-  gitPush
-  pure tfstate
+  gitPull
+  let path = stateFilePath name
+  stateExists <- exists path
+  unless stateExists $ do
+    purge (stateFilePath name)
+    gitPush
+  pure NoContent
 
 stateFilePath :: Text -> Text
 stateFilePath name = name <> "/terraform.tfstate"
