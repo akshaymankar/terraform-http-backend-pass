@@ -1,0 +1,37 @@
+cabal-version:       >=1.10
+name:                terraform-http-backend-pass
+version:             0.1.0.0
+license-file:        LICENSE
+author:              Akshay Mankar
+maintainer:          itsakshaymankar@gmail.com
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+executable terraform-http-backend-pass
+  main-is:             Main.hs
+  hs-source-dirs:      app
+  build-depends:       base >=4.14 && <5
+                     , terraform-http-backend-pass
+  default-language:    Haskell2010
+
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  extra-libraries:     z
+  build-depends:       base >= 4.14 && <5
+                     , bytestring
+                     , mtl
+                     , optparse-applicative
+                     , optparse-generic
+                     , servant
+                     , servant-server
+                     , shelly
+                     , text
+                     , warp
+  exposed-modules:     Terraform.HttpBackend.Pass.Api
+                     , Terraform.HttpBackend.Pass.App
+                     , Terraform.HttpBackend.Pass.Crypt
+                     , Terraform.HttpBackend.Pass.Env
+                     , Terraform.HttpBackend.Pass.Git
+                     , Terraform.HttpBackend.Pass.Options
+                     , Terraform.HttpBackend.Pass.Run
