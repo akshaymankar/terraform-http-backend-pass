@@ -1,19 +1,13 @@
-{ mkDerivation, aeson, base, bytestring, directory, mtl
-, optparse-applicative, optparse-generic, servant, servant-server
-, shelly, stdenv, text, warp, zlib
-}:
-mkDerivation {
-  pname = "terraform-http-backend-pass";
-  version = "0.1.0.0";
-  src = ./.;
-  isLibrary = true;
-  isExecutable = true;
-  libraryHaskellDepends = [
-    aeson base bytestring directory mtl optparse-applicative
-    optparse-generic servant servant-server shelly text warp
-  ];
-  librarySystemDepends = [ zlib ];
-  executableHaskellDepends = [ base ];
-  license = "unknown";
-  hydraPlatforms = stdenv.lib.platforms.none;
-}
+let sources = import ./nix/sources.nix;
+in { pkgs ? import sources.nixpkgs {},
+     compiler ? "ghc8103"
+   }:
+     let
+       servantPkgs = import sources.servant {inherit pkgs compiler; };
+       overrides = self: super: {
+         terraform-http-backend-pass = self.callCabal2nix "terraform-http-backend-pass" ./. {};
+         servant = servantPkgs.servant;
+         servant-server = servantPkgs.servant-server;
+       };
+       hPkgs = pkgs.haskell.packages.${compiler}.override { inherit overrides; };
+     in hPkgs.terraform-http-backend-pass

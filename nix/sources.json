@@ -22,5 +22,17 @@
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/8542021fe7f9f777294649b1cdc853240806ff21.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "servant": {
+        "branch": "master",
+        "description": "Main repository for the servant libraries -- DSL for describing, serving, querying, mocking, documenting web applications and more!",
+        "homepage": "https://docs.servant.dev/",
+        "owner": "haskell-servant",
+        "repo": "servant",
+        "rev": "27173c922311112dd153346cf3cd72b9fb0f3551",
+        "sha256": "08lar7s9fi49qzkgrq55z6nc0khx1z36914d2f086wprx0wyrk0a",
+        "type": "tarball",
+        "url": "https://github.com/haskell-servant/servant/archive/27173c922311112dd153346cf3cd72b9fb0f3551.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
