@@ -51,7 +51,8 @@ instance (Monad m, MonadIO m) => MonadPass (AppT m) where
       Shelly.run_ "pass" ["rm", name]
   exists name = do
     Env {..} <- ask
-    liftIO $ doesFileExist (directory <> "/" <> Text.unpack name)
+    let path = directory <> "/" <> Text.unpack name <> ".gpg"
+    liftIO $ doesFileExist path
 
 runAppT :: Env -> AppT m a -> m a
 runAppT env (AppT r) = runReaderT r env
