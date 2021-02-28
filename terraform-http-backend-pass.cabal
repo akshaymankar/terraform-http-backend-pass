@@ -6,6 +6,7 @@ author:              Akshay Mankar
 maintainer:          itsakshaymankar@gmail.com
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
+                   , README.md
 
 executable terraform-http-backend-pass
   main-is:             Main.hs
