@@ -4,9 +4,19 @@ version:             0.1.0.0
 license-file:        LICENSE
 author:              Akshay Mankar
 maintainer:          itsakshaymankar@gmail.com
+copyright:           2021 Akshay Mankar
+homepage:            https://github.com/akshaymankar/terraform-http-backend-pass#readme
+bug-reports:         https://github.com/akshaymankar/terraform-http-backend-pass/issues
 build-type:          Simple
+category:            Terraform
+synopsis:            HTTP backend to store terraform state using pass and git
+description:         Please see the README on GitHub at <https://github.com/akshaymankar/terraform-http-backend-pass#readme>
 extra-source-files:  CHANGELOG.md
                    , README.md
+
+source-repository head
+  type: git
+  location: https://github.com/akshaymankar/terraform-http-backend-pass
 
 executable terraform-http-backend-pass
   main-is:             Main.hs
