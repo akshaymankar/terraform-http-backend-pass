@@ -2,6 +2,7 @@ cabal-version:       >=1.10
 name:                terraform-http-backend-pass
 version:             0.1.0.0
 license-file:        LICENSE
+license:             AGPL
 author:              Akshay Mankar
 maintainer:          itsakshaymankar@gmail.com
 copyright:           2021 Akshay Mankar
