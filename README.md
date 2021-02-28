@@ -60,8 +60,8 @@ used.
      }
    }
    ```
-   The address cacn can also be specified dynamically using the
-   `-backend-config` option while running `terraform init`
+   The address can also be specified dynamically using the `-backend-config`
+   option while running `terraform init`
 6. Use terraform as usual:
    ```bash
    terraform init
