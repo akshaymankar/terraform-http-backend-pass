@@ -3,7 +3,7 @@ let
   pkgs = import sources.nixpkgs {};
 in {
   env = pkgs.buildEnv {
-    name = "terraform-http-pass-backend";
+    name = "terraform-http-backend-pass";
     paths = with pkgs; [
       pass
       niv
