@@ -33,7 +33,8 @@ used.
      ```
    - Using [nix](https://nixos.org/):
      ```bash
-     nix-env -f https://git.coop/akshay/terraform-http-backend-pass/-/archive/main/terraform-http-backend-pass-main.tar.gz -i
+     nix registry add terraform-http-backend-pass git+https://git.coop/akshay/terraform-http-backend-pass
+     nix build 'terraform-http-backend-pass#' --profile $HOME/.nix-profile
      ```
 2. Create a pass repository:
    ```bash

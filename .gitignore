@@ -1,3 +1,4 @@
 result
 dist-newstyle
 .dir-locals.el
+.direnv

@@ -1,13 +1,19 @@
-let sources = import ./nix/sources.nix;
-in { pkgs ? import sources.nixpkgs {},
-     compiler ? "ghc8103"
-   }:
-     let
-       servantPkgs = import sources.servant {inherit pkgs compiler; };
-       overrides = self: super: {
-         terraform-http-backend-pass = self.callCabal2nix "terraform-http-backend-pass" ./. {};
-         servant = servantPkgs.servant;
-         servant-server = servantPkgs.servant-server;
-       };
-       hPkgs = pkgs.haskell.packages.${compiler}.override { inherit overrides; };
-     in hPkgs.terraform-http-backend-pass
+{ mkDerivation, aeson, base, bytestring, directory, lib, mtl
+, optparse-applicative, optparse-generic, servant, servant-server
+, shelly, text, warp
+}:
+mkDerivation {
+  pname = "terraform-http-backend-pass";
+  version = "0.1.0.0";
+  src = ./.;
+  isLibrary = true;
+  isExecutable = true;
+  libraryHaskellDepends = [
+    aeson base bytestring directory mtl optparse-applicative
+    optparse-generic servant servant-server shelly text warp
+  ];
+  executableHaskellDepends = [ base ];
+  homepage = "https://github.com/akshaymankar/terraform-http-backend-pass#readme";
+  description = "HTTP backend to store terraform state using pass and git";
+  license = "AGPL";
+}
