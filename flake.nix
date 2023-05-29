@@ -26,7 +26,7 @@
               baseName == ".hspec"
             );
         };
-        haskellPackages = pkgs.haskell.packages.ghc8107.override {
+        haskellPackages = pkgs.haskell.packages.ghc94.override {
           overrides = hself: hsuper:
             {
               terraform-http-backend-pass = hlib.overrideSrc (hself.callPackage ./default.nix {}) {src = filteredSource;};
@@ -39,7 +39,7 @@
             packages = p: [p.terraform-http-backend-pass];
             buildInputs = [
               pkgs.cabal-install
-              pkgs.haskell.packages.ghc8107.haskell-language-server
+              pkgs.haskell.packages.ghc94.haskell-language-server
               pkgs.cabal2nix
 
               pkgs.pass
