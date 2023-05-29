@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## 0.1.0.1 -- 2023-05-29
+
 * GetState: Fix existence check.
 
 ## 0.1.0.0 -- 2021-02-28
